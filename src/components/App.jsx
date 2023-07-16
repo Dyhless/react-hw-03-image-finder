@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 
-import * as SearchBar from './Searchbar/Searchbar';
 import {
   Button,
   ImageGallery,
@@ -11,6 +10,16 @@ import {
 } from 'components';
 
 export class App extends Component {
+  state = {
+    value: '',
+    images: [],
+    page: 1,
+    isLoadMoreBtnVisible: false,
+    isLoading: false,
+    isModalVisible: false,
+    dataForModal: null,
+  };
+
   render() {
     return (
       <>
@@ -43,6 +52,8 @@ export class App extends Component {
             <img src="" alt="" />
           </Modal>
         </div>
+
+        <Loader>Loading...</Loader>
       </>
     );
   }
