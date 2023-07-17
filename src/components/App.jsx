@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 import * as API from './getImages';
 import ImageGallery from './ImageGallery/ImageGallery';
 import Button from './Button/Button';
