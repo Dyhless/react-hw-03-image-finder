@@ -25,6 +25,20 @@ export class App extends Component {
     }
   }
 
+  loadMore = () => {
+    this.setState(prevState => ({
+      currentPage: prevState.currentPage + 1,
+    }));
+  };
+
+  handleSubmit = query => {
+    this.setState({
+      searchText: query,
+      images: [],
+      currentPage: 1,
+    });
+  };
+
   addImages = async () => {
     const { query, page } = this.state;
     try {

@@ -1,8 +1,11 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
 
+import { Input, SearchButton, SearchForm } from './Searchbar.styled';
+
 export default class Searchbar extends Component {
   state = {
+    searchText: '',
     value: '',
   };
 
@@ -12,7 +15,9 @@ export default class Searchbar extends Component {
 
   handleSubmit = event => {
     event.preventDefault();
-    this.props.onSubmit(this.state.value);
+    const { value } = event.target.elements.searchText;
+    this.props.onSubmit(value.trim());
+    event.target.reset();
   };
 
   render() {
@@ -23,8 +28,8 @@ export default class Searchbar extends Component {
             <span>Search</span>
           </SearchButton>
 
-          <input
-            class="input"
+          <Input
+            class="searchText"
             type="text"
             autocomplete="off"
             autofocus
@@ -37,3 +42,7 @@ export default class Searchbar extends Component {
     );
   }
 }
+
+Searchbar.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
+};
