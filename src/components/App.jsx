@@ -1,13 +1,9 @@
 import React, { Component } from 'react';
-
-import {
-  Button,
-  ImageGallery,
-  ImageGalleryItem,
-  Loader,
-  Modal,
-  Searchbar,
-} from 'components';
+import * as API from './getImages';
+import ImageGallery from './ImageGallery';
+import Button from './Button';
+import Loader from './Loader';
+import Searchbar from './Searchbar/Searchbar';
 
 export class App extends Component {
   state = {
@@ -20,40 +16,47 @@ export class App extends Component {
     dataForModal: null,
   };
 
+  addImages = async () => {
+    const { query, page } = this.state;
+    try {
+      this.state({ isLoading: true });
+      const data = await API.getImages(query, page);
+
+      if (data.this.length === 0) {
+        return alert('No such images');
+      }
+      const imagesFormatedtoList = data.hits.map(
+        ({ id, tags, webformatURL, largeImageURL }) => ({
+          id,
+          tags,
+          webformatURL,
+          largeImageURL,
+        })
+      );
+
+      this.setState(state => ({
+        images: [...state.images, ...imagesFormatedtoList],
+        error: '',
+        totalPages: Math.ceil(data.totalHits / 12),
+      }));
+    } catch (error) {
+      this.setState({ error: 'Ooops...Something went wrong' }); //
+    } finally {
+      this.setState({ isLoading: false });
+    }
+  };
+
   render() {
+    const { images, isLoading, currentPage, totalPages } = this.state;
+
     return (
       <>
-        <Searchbar class="searchbar">
-          <form class="form">
-            <button type="submit" class="button">
-              <span class="button-label">Search</span>
-            </button>
-
-            <input
-              class="input"
-              type="text"
-              autocomplete="off"
-              autofocus
-              placeholder="Search images and photos"
-            />
-          </form>
-        </Searchbar>
-
-        <ImageGallery class="gallery">
-          <ImageGalleryItem class="gallery-item">
-            <img src="" alt="" />
-          </ImageGalleryItem>
-        </ImageGallery>
-
-        <Button>Load more</Button>
-
-        <div class="overlay">
-          <Modal class="modal">
-            <img src="" alt="" />
-          </Modal>
-        </div>
-
-        <Loader>Loading...</Loader>
+        <Searchbar onSubmit={this.handleSubmit} />
+        {images.length > 0 && <ImageGallery images={images} />}
+        {isLoading && <Loader />}
+        {images.length > 0 && totalPages !== currentPage && !isLoading && (
+          <Button onClick={this.loadMore} />
+        )}
       </>
     );
   }
