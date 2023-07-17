@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import * as API from './getImages';
-import ImageGallery from './ImageGallery';
-import Button from './Button';
-import Loader from './Loader';
+import ImageGallery from './ImageGallery/ImageGallery';
+import Button from './Button/Button';
+import Loader from './Loader/Loader';
 import Searchbar from './Searchbar/Searchbar';
 
 export class App extends Component {
