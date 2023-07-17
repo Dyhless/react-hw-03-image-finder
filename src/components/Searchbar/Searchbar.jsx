@@ -15,8 +15,8 @@ class Searchbar extends Component {
 
   handleSubmit = event => {
     event.preventDefault();
-    const { value } = event.target.elements.searchText;
-    this.props.onSubmit(value.trim());
+    const value = event.target.searchText.value.trim();
+    this.props.onSubmit(value);
     event.target.reset();
   };
 
@@ -29,6 +29,7 @@ class Searchbar extends Component {
           </SearchButton>
 
           <Input
+            name="searchText"
             className="searchText"
             type="text"
             autoComplete="off"
