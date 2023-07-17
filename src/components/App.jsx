@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { Component, createRef } from 'react';
 import * as API from './getImages';
 import ImageGallery from './ImageGallery/ImageGallery';
 import Button from './Button/Button';
@@ -10,11 +10,11 @@ export class App extends Component {
     value: '',
     images: [],
     page: 1,
-    isLoadMoreBtnVisible: false,
     isLoading: false,
-    isModalVisible: false,
-    dataForModal: null,
+    totalPages: 0,
   };
+
+  loadMoreButtonRef = createRef();
 
   componentDidUpdate(prevProps, prevState) {
     if (
@@ -26,9 +26,22 @@ export class App extends Component {
   }
 
   loadMore = () => {
-    this.setState(prevState => ({
-      page: prevState.page + 1,
-    }));
+    this.setState(
+      prevState => ({
+        page: prevState.page + 1,
+      }),
+      () => {
+        this.addImages();
+        this.scrollDown();
+      }
+    );
+  };
+
+  scrollDown = () => {
+    this.loadMoreButtonRef.current.scrollIntoView({
+      behavior: 'smooth',
+      block: 'end',
+    });
   };
 
   handleSubmit = query => {
@@ -36,13 +49,14 @@ export class App extends Component {
       value: query,
       images: [],
       page: 1,
+      isLoading: true,
+      totalPages: 0,
     });
   };
 
   addImages = async () => {
     const { value, page } = this.state;
     try {
-      this.setState({ isLoading: true });
       const data = await API.getImages(value, page);
 
       if (data.hits.length === 0) {
@@ -59,26 +73,29 @@ export class App extends Component {
 
       this.setState(state => ({
         images: [...state.images, ...imagesFormattedToList],
-        error: '',
+        isLoading: false,
         totalPages: Math.ceil(data.totalHits / 12),
       }));
     } catch (error) {
-      this.setState({ error: 'Ooops...Something went wrong' });
-    } finally {
-      this.setState({ isLoading: false });
+      this.setState({
+        error: 'Ooops... Something went wrong',
+        isLoading: false,
+      });
     }
   };
 
   render() {
-    const { images, isLoading, page, totalPages } = this.state;
+    const { images, isLoading, totalPages, page } = this.state;
 
     return (
       <>
         <Searchbar onSubmit={this.handleSubmit} />
-        {!isLoading && images.length > 0 && <ImageGallery images={images} />}
+        {images.length > 0 && <ImageGallery images={images} />}
         {isLoading && <Loader />}
-        {!isLoading && images.length > 0 && totalPages > page && (
-          <Button onClick={this.loadMore} />
+        {totalPages > page && (
+          <div ref={this.loadMoreButtonRef}>
+            <Button onClick={this.loadMore} />
+          </div>
         )}
       </>
     );

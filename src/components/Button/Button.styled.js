@@ -1,21 +1,24 @@
 import styled from 'styled-components';
 
 export const ButtonLoadMore = styled.button`
-  display: inline-block;
-  margin-left: 50%;
-  margin-bottom: 28px;
-  transform: translateX(-50%);
-  min-width: 60;
-  padding: 14px;
-  border-radius: 20px;
+  display: block;
+  margin: 20px auto;
+  padding: 10px 20px;
+  border-radius: 30px;
   border: none;
-  font-size: 18px;
+  background-color: #5f116f;
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: bold;
   cursor: pointer;
-  color: #5f116f;
-  box-shadow: inset 0 3px 4px #ffffff, inset 0 -3px 4px #c49dbf;
-  &:hover,
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #8f33a6;
+  }
+
   &:focus {
-    position: relative;
-    top: 3px;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(95, 17, 111, 0.4);
   }
 `;

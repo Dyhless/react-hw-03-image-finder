@@ -22,22 +22,27 @@ export const SearchButton = styled.button`
   width: 80px;
   height: 40px;
   border: none;
-  background-color: #222;
+  background-color: #5f116f;
   border-radius: 20px;
   font-size: 18px;
   color: #fff;
-  box-shadow: 0 3px 4px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 3px 4px rgba(95, 17, 111, 0.3);
   cursor: pointer;
-  transition: box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1);
-  &:hover,
+  transition: box-shadow 0.3s ease;
+
+  &:hover {
+    box-shadow: 0 3px 4px rgba(95, 17, 111, 0.5);
+  }
+
   &:focus {
-    box-shadow: 0 3px 4px rgba(0, 0, 0, 0.5);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(95, 17, 111, 0.4);
   }
 `;
 
 export const Input = styled.input`
   width: 400px;
-  height: 40px;
+  height: 20px;
   padding: 10px;
   text-align: center;
   font-size: 16px;
@@ -46,6 +51,7 @@ export const Input = styled.input`
   border-radius: 20px;
   background-color: #222;
   color: #fff;
+
   &::placeholder {
     padding: 10px;
     font-size: 16px;
