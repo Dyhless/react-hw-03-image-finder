@@ -30,13 +30,12 @@ class Searchbar extends Component {
 
           <Input
             name="searchText"
-            className="searchText"
             type="text"
             autoComplete="off"
             autoFocus
             placeholder="Search images and photos"
-            onChange={this.handleChange}
             value={this.state.value}
+            onChange={this.handleChange}
           />
         </SearchForm>
       </header>
