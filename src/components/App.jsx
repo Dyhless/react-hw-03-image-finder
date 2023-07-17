@@ -16,6 +16,15 @@ export class App extends Component {
     dataForModal: null,
   };
 
+  componentDidUpdate(prevProp, prevState) {
+    if (
+      prevState.searchText !== this.state.searchText ||
+      prevState.searchPage !== this.state.currentPage
+    ) {
+      this.addImages();
+    }
+  }
+
   addImages = async () => {
     const { query, page } = this.state;
     try {
