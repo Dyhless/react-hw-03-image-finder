@@ -78,7 +78,7 @@ export class App extends Component {
       }));
     } catch (error) {
       this.setState({
-        error: 'Ooops... Something went wrong',
+        error: 'Some error',
         isLoading: false,
       });
     }
