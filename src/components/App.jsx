@@ -16,10 +16,10 @@ export class App extends Component {
     dataForModal: null,
   };
 
-  componentDidUpdate(prevProp, prevState) {
+  componentDidUpdate(prevProps, prevState) {
     if (
-      prevState.searchText !== this.state.searchText ||
-      prevState.searchPage !== this.state.currentPage
+      prevState.value !== this.state.value ||
+      prevState.page !== this.state.page
     ) {
       this.addImages();
     }
@@ -27,28 +27,28 @@ export class App extends Component {
 
   loadMore = () => {
     this.setState(prevState => ({
-      currentPage: prevState.currentPage + 1,
+      page: prevState.page + 1,
     }));
   };
 
   handleSubmit = query => {
     this.setState({
-      searchText: query,
+      value: query,
       images: [],
-      currentPage: 1,
+      page: 1,
     });
   };
 
   addImages = async () => {
-    const { query, page } = this.state;
+    const { value, page } = this.state;
     try {
-      this.state({ isLoading: true });
-      const data = await API.getImages(query, page);
+      this.setState({ isLoading: true });
+      const data = await API.getImages(value, page);
 
-      if (data.this.length === 0) {
+      if (data.hits.length === 0) {
         return alert('No such images');
       }
-      const imagesFormatedtoList = data.hits.map(
+      const imagesFormattedToList = data.hits.map(
         ({ id, tags, webformatURL, largeImageURL }) => ({
           id,
           tags,
@@ -58,26 +58,26 @@ export class App extends Component {
       );
 
       this.setState(state => ({
-        images: [...state.images, ...imagesFormatedtoList],
+        images: [...state.images, ...imagesFormattedToList],
         error: '',
         totalPages: Math.ceil(data.totalHits / 12),
       }));
     } catch (error) {
-      this.setState({ error: 'Ooops...Something went wrong' }); //
+      this.setState({ error: 'Ooops...Something went wrong' });
     } finally {
       this.setState({ isLoading: false });
     }
   };
 
   render() {
-    const { images, isLoading, currentPage, totalPages } = this.state;
+    const { images, isLoading, page, totalPages } = this.state;
 
     return (
       <>
         <Searchbar onSubmit={this.handleSubmit} />
         {!isLoading && images.length > 0 && <ImageGallery images={images} />}
         {isLoading && <Loader />}
-        {!isLoading && images.length > 0 && totalPages !== currentPage && (
+        {!isLoading && images.length > 0 && totalPages > page && (
           <Button onClick={this.loadMore} />
         )}
       </>

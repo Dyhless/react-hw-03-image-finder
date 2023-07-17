@@ -1,9 +1,7 @@
-import { Component } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import Input from './Searchbar.styled';
-import SearchButton from './Searchbar.styled';
-import SearchForm from './Searchbar.styled';
+import { Input, SearchButton, SearchForm } from './Searchbar.styled';
 
 class Searchbar extends Component {
   state = {
@@ -24,17 +22,17 @@ class Searchbar extends Component {
 
   render() {
     return (
-      <header class="searchbar">
+      <header className="searchbar">
         <SearchForm onSubmit={this.handleSubmit}>
           <SearchButton type="submit">
             <span>Search</span>
           </SearchButton>
 
           <Input
-            class="searchText"
+            className="searchText"
             type="text"
-            autocomplete="off"
-            autofocus
+            autoComplete="off"
+            autoFocus
             placeholder="Search images and photos"
             onChange={this.handleChange}
             value={this.state.value}
