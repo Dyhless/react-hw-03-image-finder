@@ -1,4 +1,16 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
+
+const gradientAnimation = keyframes`
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+`;
 
 export const SearchForm = styled.form`
   position: fixed;
@@ -26,17 +38,22 @@ export const SearchButton = styled.button`
   border-radius: 20px;
   font-size: 18px;
   color: #fff;
-  box-shadow: 0 3px 4px rgba(95, 17, 111, 0.3);
   cursor: pointer;
-  transition: box-shadow 0.3s ease;
+  animation: ${gradientAnimation} 2s linear infinite alternate-reverse;
 
   &:hover {
-    box-shadow: 0 3px 4px rgba(95, 17, 111, 0.5);
+    animation-play-state: paused;
+    background: linear-gradient(45deg, #ff0050, #ffa700, #00ff41, #0084ff);
+    background-size: 400% 400%;
+    animation: ${gradientAnimation} 3s ease infinite;
   }
 
   &:focus {
     outline: none;
-    box-shadow: 0 0 0 3px rgba(95, 17, 111, 0.4);
+    animation-play-state: paused;
+    background: linear-gradient(45deg, #ff0050, #ffa700, #00ff41, #0084ff);
+    background-size: 400% 400%;
+    animation: ${gradientAnimation} 3s ease infinite;
   }
 `;
 

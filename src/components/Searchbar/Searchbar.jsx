@@ -31,7 +31,7 @@ const Searchbar = ({ onSubmit }) => {
           type="text"
           autoComplete="off"
           autoFocus
-          placeholder="Search images and photos"
+          placeholder="Search for graphic images"
           value={searchText}
           onChange={handleChange}
         />
