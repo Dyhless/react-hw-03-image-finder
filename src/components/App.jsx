@@ -1,4 +1,4 @@
-import { Component, createRef } from 'react';
+import { Component } from 'react';
 import * as API from './getImages';
 import ImageGallery from './ImageGallery/ImageGallery';
 import Button from './Button/Button';
@@ -7,70 +7,48 @@ import Searchbar from './Searchbar/Searchbar';
 
 export class App extends Component {
   state = {
-    value: '',
+    searchText: '',
     images: [],
-    page: 1,
+    currentPage: 1,
     isLoading: false,
-    totalPages: 0,
     error: null,
+    totalPages: 0,
   };
-
-  loadMoreButtonRef = createRef();
 
   componentDidUpdate(prevProps, prevState) {
     if (
-      prevState.value !== this.state.value ||
-      prevState.page !== this.state.page
+      prevState.searchText !== this.state.searchText ||
+      prevState.currentPage !== this.state.currentPage
     ) {
       this.addImages();
     }
   }
 
   loadMore = () => {
-    this.setState(
-      prevState => ({
-        page: prevState.page + 1,
-      }),
-      () => {
-        this.addImages();
-        this.scrollDown();
-      }
-    );
-  };
-
-  scrollDown = () => {
-    if (this.loadMoreButtonRef.current) {
-      this.loadMoreButtonRef.current.scrollIntoView({
-        behavior: 'smooth',
-        block: 'end',
-      });
-    }
+    this.setState(prevState => ({
+      currentPage: prevState.currentPage + 1,
+    }));
   };
 
   handleSubmit = query => {
     this.setState({
-      value: query,
+      searchText: query,
       images: [],
-      page: 1,
-      isLoading: true,
-      totalPages: 0,
+      currentPage: 1,
     });
   };
 
   addImages = async () => {
-    const { value, page, totalPages } = this.state;
+    const { searchText, currentPage } = this.state;
     try {
-      const data = await API.getImages(value, page);
+      this.setState({ isLoading: true });
+      const data = await API.getImages(searchText, currentPage);
 
       if (data.hits.length === 0) {
-        if (page >= totalPages) {
-          this.setState({
-            isLoading: false,
-          });
-        }
         return alert('No such images');
       }
-      const imagesFormattedToList = data.hits.map(
+
+      const imagesFormatedtoList = data.hits.map(
         ({ id, tags, webformatURL, largeImageURL }) => ({
           id,
           tags,
@@ -80,30 +58,27 @@ export class App extends Component {
       );
 
       this.setState(state => ({
-        images: [...state.images, ...imagesFormattedToList],
-        isLoading: false,
+        images: [...state.images, ...imagesFormatedtoList],
+        error: '',
         totalPages: Math.ceil(data.totalHits / 12),
       }));
     } catch (error) {
-      this.setState({
-        error: 'Some error',
-        isLoading: false,
-      });
+      this.setState({ error: 'Sorry, some error' });
+    } finally {
+      this.setState({ isLoading: false });
     }
   };
 
   render() {
-    const { images, isLoading, totalPages, page } = this.state;
+    const { images, isLoading, currentPage, totalPages } = this.state;
 
     return (
       <>
         <Searchbar onSubmit={this.handleSubmit} />
         {images.length > 0 && <ImageGallery images={images} />}
         {isLoading && <Loader />}
-        {totalPages > page && (
-          <div ref={this.loadMoreButtonRef}>
-            <Button onClick={this.loadMore} />
-          </div>
+        {images.length > 0 && totalPages !== currentPage && !isLoading && (
+          <Button onClick={this.loadMore} />
         )}
       </>
     );
