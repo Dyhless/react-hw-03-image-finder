@@ -12,6 +12,7 @@ export class App extends Component {
     page: 1,
     isLoading: false,
     totalPages: 0,
+    error: null,
   };
 
   loadMoreButtonRef = createRef();
@@ -38,10 +39,12 @@ export class App extends Component {
   };
 
   scrollDown = () => {
-    this.loadMoreButtonRef.current.scrollIntoView({
-      behavior: 'smooth',
-      block: 'end',
-    });
+    if (this.loadMoreButtonRef.current) {
+      this.loadMoreButtonRef.current.scrollIntoView({
+        behavior: 'smooth',
+        block: 'end',
+      });
+    }
   };
 
   handleSubmit = query => {
@@ -55,11 +58,16 @@ export class App extends Component {
   };
 
   addImages = async () => {
-    const { value, page } = this.state;
+    const { value, page, totalPages } = this.state;
     try {
       const data = await API.getImages(value, page);
 
       if (data.hits.length === 0) {
+        if (page >= totalPages) {
+          this.setState({
+            isLoading: false,
+          });
+        }
         return alert('No such images');
       }
       const imagesFormattedToList = data.hits.map(
