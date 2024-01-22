@@ -1,6 +1,6 @@
 ## Component lifecycle. Working with the REST API
 
-### Task - Admission criteria
+### Tasks / Admission criteria
 
 Use this
 [React project template](https://github.com/goitacademy/react-homework-template/blob/main/README.en.md)
@@ -31,7 +31,7 @@ phonebook contacts to `localStorage'. Use lifecycle methods.
 - When the application is loaded, contacts, if any, are read from local storage
   and are written to the state.
 
-## 2 - Image Search.
+## Task 2 - Image Search.
 
 Write a keyword image search application. Preview of a working application
 [see link](https://drive.google.com/file/d/1oXCGyiq4uKwW0zzraZLKk4lh3voBlBzZ/view?usp=sharing).
