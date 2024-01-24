@@ -6,7 +6,7 @@ Use this
 [React project template](https://github.com/goitacademy/react-homework-template/blob/main/README.en.md)
 as a starting point for your application.
 
-- The `goit-react-hw-03-phonebook` and `goit-react-hw-03-image-finder`.
+- The `goit-react-hw-03-image-finder`.
 - When you turn in your homework, there are links to: the source files and the
   work page projects on `GitHub Pages`.
 - The component state stores the minimum required set of data, The rest is
@@ -21,17 +21,7 @@ as a starting point for your application.
 - JS-code is clean and clear, `Prettier` is used
 - Styling is done by CSS modules or `Styled Components`.
 
-## Task 1 - Contact Book.
-
-Take your solution to the assignment from the previous homework and add storage
-phonebook contacts to `localStorage'. Use lifecycle methods.
-
-- When you add and delete a contact, the contacts are stored in the local
-  storage.
-- When the application is loaded, contacts, if any, are read from local storage
-  and are written to the state.
-
-## Task 2 - Image Search.
+## Task - Image Search.
 
 Write a keyword image search application. Preview of a working application
 [see link](https://drive.google.com/file/d/1oXCGyiq4uKwW0zzraZLKk4lh3voBlBzZ/view?usp=sharing).
